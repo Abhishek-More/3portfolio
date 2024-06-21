@@ -7,16 +7,16 @@ export const metadata: Metadata = {
   openGraph: {
     title: "Abhishek More",
     description: "Experience Peak.",
-    url: "https://abhishekmore.com",
+    url: "https://3portfolio-gray.vercel.app",
     siteName: "Next.js",
     images: [
       {
-        url: "https://abhishekmore.com/ogimage.png", // Must be an absolute URL
+        url: "https://3portfolio-gray.vercel.app/ogimage.png", // Must be an absolute URL
         width: 800,
         height: 600,
       },
       {
-        url: "https://abhishekmore.com/ogimage.png", // Must be an absolute URL
+        url: "https://3portfolio-gray.vercel.app/ogimage.png", // Must be an absolute URL
         width: 1800,
         height: 1600,
         alt: "My custom alt",
@@ -55,10 +55,9 @@ export default function Home() {
           text="Devpost"
         />
       </div>
-      <div className="absolute top-8 left-8">
-        <p className="text-white text-7xl font-bold">ABHISHEK</p>
-        <p className="text-white text-7xl font-bold">MORE</p>
-      </div>
+      {/* <div className="absolute flex justify-center top-8 w-screen"> */}
+      {/*   <p className="text-white text-[200px] font-medium">CLIMB</p> */}
+      {/* </div> */}
 
       {loading && <p className="text-white">Loading</p>}
 
