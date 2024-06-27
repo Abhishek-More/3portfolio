@@ -120,7 +120,7 @@ export default function Home() {
               duration: 0.6,
               ease: "easeInOut",
             }}
-            className="relative flex justify-between mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden"
+            className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden"
           >
             <div className="flex">
               <div
@@ -149,6 +149,17 @@ export default function Home() {
                 </p>
               </motion.div>
             </div>
+
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{
+                duration: 0.5,
+                delay: 1,
+                ease: "easeInOut",
+              }}
+              className={`${loading ? "bg-gray-400" : "bg-white"} flex-shrink-0 h-[44px] w-[44px] rounded-full overflow-hidden`}
+            ></motion.div>
           </motion.div>
 
           <AnimatePresence>
