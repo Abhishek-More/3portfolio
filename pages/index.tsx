@@ -1,12 +1,14 @@
 import { ResourceLink } from "@/components/ResourceLink";
-import Spline from "@splinetool/react-spline";
 import Image from "next/image";
-import { useState } from "react";
+import { Suspense, useState } from "react";
+import React from "react";
 import type { Metadata } from "next";
 import { NowPlaying } from "@/components/NowPlaying";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { NowPlayingText } from "@/components/NowPlayingText";
+
+const Spline = React.lazy(() => import("@splinetool/react-spline"));
 
 export const metadata: Metadata = {
   openGraph: {
@@ -97,11 +99,13 @@ export default function Home() {
       <div
         className={`${loading ? "opacity-0" : "opacity-100"} transition-opacity duration-1000 delay-1000`}
       >
-        <Spline
-          scene="https://prod.spline.design/x9AvaSbmi1rQ3uaQ/scene.splinecode"
-          onLoad={handleLoad}
-          className={`absolute z-40`}
-        />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Spline
+            scene="https://prod.spline.design/x9AvaSbmi1rQ3uaQ/scene.splinecode"
+            onLoad={handleLoad}
+            className={`absolute z-40`}
+          />
+        </Suspense>
       </div>
 
       {/* DYNAMIC ISLAND OVERLAY */}
@@ -133,18 +137,10 @@ export default function Home() {
                   width={256}
                   height={256}
                   alt=""
+                  priority
                 ></Image>
               </div>
-              <motion.div
-                initial={{ opacity: 0, scale: 0.7 }}
-                animate={{ opacity: 1, scale: 1 }}
-                transition={{
-                  delay: 0.5,
-                  duration: 0.2,
-                  ease: "easeInOut",
-                }}
-                className="flex flex-col justify-end gap-1 ml-2"
-              >
+              <motion.div className="flex flex-col justify-end gap-1 ml-2">
                 <p className="montreal text-white opacity-40 text-[12px] leading-none tracking-wide mt-1 text-nowrap text-ellipsis">
                   SWE @ Dripos
                 </p>

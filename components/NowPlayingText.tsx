@@ -69,12 +69,12 @@ export const NowPlayingText = ({ visible }: { visible?: boolean }) => {
             height={300}
             cx={150}
             cy={150}
-            rx={50}
-            ry={50}
+            rx={53}
+            ry={53}
             startOffset={0}
             reversed={true}
-            text="NOW PLAYING NOW PLAYING NOW PLAYING"
-            textProps={{ style: { fontSize: 14 } }}
+            text={"NOW PLAYING - NOW PLAYING - NOW PLAYING - "}
+            textProps={{ style: { fontSize: 14, opacity: 0.4 } }}
             svgProps={{ className: "animate-spin-slow" }}
           />
         </motion.div>
