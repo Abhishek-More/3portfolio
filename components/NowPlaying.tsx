@@ -32,9 +32,6 @@ export const NowPlaying = ({ data }: { data: SpotifyData }) => {
             </p>
           </div>
         </div>
-        <div>
-          <GiSoundWaves className="text-white text-2xl" />
-        </div>
       </div>
       <div className="relative h-[5px] w-full rounded-full bg-white bg-opacity-20 mt-4 overflow-hidden">
         <div

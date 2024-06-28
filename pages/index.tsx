@@ -110,7 +110,7 @@ export default function Home() {
 
       {/* DYNAMIC ISLAND OVERLAY */}
       <div className="flex flex-col justify-center items-center absolute h-screen w-screen bg-[#ececec] z-50 gap-2">
-        <NowPlayingText visible={showPlayer} />
+        <NowPlayingText visible={data?.isPlaying && showPlayer} />
         <div className="relative">
           <motion.div
             initial={{ width: 60 }}
