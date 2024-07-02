@@ -5,14 +5,24 @@ export const ResourceLink = ({
   href,
   text,
   onLight,
+  onHover,
 }: {
   href: string;
   text: string;
   onLight?: boolean;
+  onHover?: (value: boolean) => void;
 }) => {
+  const handleHover = (value: boolean) => {
+    if (onHover) {
+      onHover(value);
+    }
+  };
+
   return (
     <div
-      className={`${onLight ? "text-black" : "text-white"} group flex cursor-pointer opacity-40 transition-opacity hover:opacity-80`}
+      className={`${!onLight ? "text-black" : "text-white"} group flex cursor-pointer opacity-40 transition-opacity hover:opacity-80`}
+      onMouseEnter={() => handleHover(true)}
+      onMouseLeave={() => handleHover(false)}
     >
       <a
         href={href}

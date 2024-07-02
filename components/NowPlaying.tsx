@@ -1,8 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { GiSoundWaves } from "react-icons/gi";
 import { SpotifyData } from "@/utils/types";
-import { NowPlayingText } from "./NowPlayingText";
 
 export const NowPlaying = ({ data }: { data: SpotifyData }) => {
   if (!data?.isPlaying) {

@@ -1,14 +1,13 @@
 import { ResourceLink } from "@/components/ResourceLink";
 import Image from "next/image";
-import { Suspense, useState } from "react";
+import { useState } from "react";
 import React from "react";
 import type { Metadata } from "next";
 import { NowPlaying } from "@/components/NowPlaying";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { NowPlayingText } from "@/components/NowPlayingText";
-
-const Spline = React.lazy(() => import("@splinetool/react-spline"));
+import { ContributionChart } from "@/components/ContributionChart";
 
 export const metadata: Metadata = {
   openGraph: {
@@ -36,18 +35,13 @@ export const metadata: Metadata = {
 
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
-export default function Home() {
+export default function Home({ contributions }: { contributions: {} }) {
   const [loading, setLoading] = useState(true);
-  const [preloader, setPreloader] = useState(true);
   const [initialLoading, setInitialLoading] = useState(true);
   const [showPlayer, setShowPlayer] = useState(false);
+  const [showContributions, setShowContributions] = useState(false);
 
   const { data } = useSWR("/api/spotify", fetcher, { refreshInterval: 3000 });
-
-  const handleLoad = () => {
-    console.log("Loaded!");
-    setLoading(false);
-  };
 
   const handleShowPlayer = (bool: boolean) => {
     if (data?.isPlaying) {
@@ -67,46 +61,29 @@ export default function Home() {
           MORE
         </p>
       </div>
-      <div className="absolute flex flex-col items-end bottom-8 right-8 z-[100]">
+      <div className="fixed flex flex-col items-end bottom-8 right-8 z-[100]">
         <div className="flex gap-4">
           <ResourceLink
             href={
               "https://firebasestorage.googleapis.com/v0/b/asciify-a4fba.appspot.com/o/Abhishek%20More%20Resume.pdf?alt=media&token=612342c0-9664-41ce-beb2-b4265b20002b"
             }
             text="Resume"
-            onLight={preloader}
           />
           <ResourceLink
             href={"https://github.com/Abhishek-More"}
             text="GitHub"
-            onLight={preloader}
+            onHover={setShowContributions}
           />
           <ResourceLink
             href={"https://www.linkedin.com/in/abhishek-more-linked"}
             text="LinkedIn"
-            onLight={preloader}
           />
           <ResourceLink
             href={"https://devpost.com/AbhishekMore"}
             text="Devpost"
-            onLight={preloader}
           />
         </div>
       </div>
-
-      {!initialLoading && (
-        <div
-          className={`${loading ? "opacity-0" : "opacity-100"} transition-opacity duration-1000 delay-1000`}
-        >
-          <Suspense fallback={<div>Loading...</div>}>
-            <Spline
-              scene="https://prod.spline.design/x9AvaSbmi1rQ3uaQ/scene.splinecode"
-              onLoad={handleLoad}
-              className={`absolute z-40`}
-            />
-          </Suspense>
-        </div>
-      )}
 
       {/* DYNAMIC ISLAND OVERLAY */}
       <div className="flex flex-col justify-center items-center absolute h-screen w-screen bg-[#ececec] z-50 gap-2">
@@ -121,6 +98,7 @@ export default function Home() {
               type: "spring",
               bounce: 0,
             }}
+            onAnimationComplete={() => setInitialLoading(false)}
             className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden"
           >
             <div className="flex">
@@ -179,8 +157,38 @@ export default function Home() {
               </motion.div>
             )}
           </AnimatePresence>
+          <AnimatePresence>
+            {showContributions && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95, y: 6 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.95, y: 6 }}
+                transition={{
+                  duration: 0.3,
+                  ease: "easeInOut",
+                }}
+                className="absolute top-[72px]"
+              >
+                <ContributionChart contributions={contributions} />
+              </motion.div>
+            )}
+          </AnimatePresence>
         </div>
       </div>
     </div>
   );
+}
+
+export async function getStaticProps() {
+  const res = await fetch(
+    "https://github-contributions-api.jogruber.de/v4/abhishek-more?y=last",
+  );
+  const contributions = await res.json();
+
+  return {
+    props: {
+      contributions,
+    },
+    revalidate: 3600,
+  };
 }
