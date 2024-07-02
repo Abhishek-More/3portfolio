@@ -45,6 +45,7 @@ export const NowPlayingText = ({ visible }: { visible?: boolean }) => {
             top: clientY,
             transform: "translate(-50%, -50%) rotate(-90deg)",
           }}
+          className="cursor-default"
           initial={{
             opacity: 0,
             scale: 0.1,

@@ -39,6 +39,7 @@ const fetcher = (url: string) => fetch(url).then((r) => r.json());
 export default function Home() {
   const [loading, setLoading] = useState(true);
   const [preloader, setPreloader] = useState(true);
+  const [initialLoading, setInitialLoading] = useState(true);
   const [showPlayer, setShowPlayer] = useState(false);
 
   const { data } = useSWR("/api/spotify", fetcher, { refreshInterval: 3000 });
@@ -49,7 +50,7 @@ export default function Home() {
   };
 
   const handleShowPlayer = (bool: boolean) => {
-    if (data.isPlaying) {
+    if (data?.isPlaying) {
       setShowPlayer(bool);
     }
   };
@@ -92,33 +93,33 @@ export default function Home() {
           />
         </div>
       </div>
-      {/* <div className="absolute flex justify-center top-8 w-screen"> */}
-      {/*   <p className="text-white text-[200px] font-medium">CLIMB</p> */}
-      {/* </div> */}
 
-      <div
-        className={`${loading ? "opacity-0" : "opacity-100"} transition-opacity duration-1000 delay-1000`}
-      >
-        <Suspense fallback={<div>Loading...</div>}>
-          <Spline
-            scene="https://prod.spline.design/x9AvaSbmi1rQ3uaQ/scene.splinecode"
-            onLoad={handleLoad}
-            className={`absolute z-40`}
-          />
-        </Suspense>
-      </div>
+      {!initialLoading && (
+        <div
+          className={`${loading ? "opacity-0" : "opacity-100"} transition-opacity duration-1000 delay-1000`}
+        >
+          <Suspense fallback={<div>Loading...</div>}>
+            <Spline
+              scene="https://prod.spline.design/x9AvaSbmi1rQ3uaQ/scene.splinecode"
+              onLoad={handleLoad}
+              className={`absolute z-40`}
+            />
+          </Suspense>
+        </div>
+      )}
 
       {/* DYNAMIC ISLAND OVERLAY */}
       <div className="flex flex-col justify-center items-center absolute h-screen w-screen bg-[#ececec] z-50 gap-2">
         <NowPlayingText visible={data?.isPlaying && showPlayer} />
         <div className="relative">
           <motion.div
-            initial={{ width: 60 }}
-            animate={{ width: 260 }}
+            animate={{ width: [60, 60, 260], y: [-50, 0, 0] }}
             transition={{
-              delay: 0.5,
-              duration: 0.6,
-              ease: "easeInOut",
+              delay: 0.75,
+              times: [0, 0.5, 1],
+              duration: 0.5,
+              type: "spring",
+              bounce: 0,
             }}
             className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden"
           >
