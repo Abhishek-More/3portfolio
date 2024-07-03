@@ -43,26 +43,22 @@ export const NowPlayingText = ({ visible }: { visible?: boolean }) => {
             position: "absolute",
             left: clientX,
             top: clientY,
+            translateX: "-50%",
+            translateY: "-50%",
             transform: "translate(-50%, -50%) rotate(-90deg)",
           }}
           className="cursor-default"
           initial={{
             opacity: 0,
             scale: 0.1,
-            translateX: "-50%",
-            translateY: "-50%",
           }}
           animate={{
             opacity: 1,
             scale: 1,
-            translateX: "-50%",
-            translateY: "-50%",
           }}
           exit={{
             opacity: 0,
             scale: 0.1,
-            translateX: "-50%",
-            translateY: "-50%",
           }}
         >
           <ReactCurvedText

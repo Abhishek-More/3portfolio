@@ -8,6 +8,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { NowPlayingText } from "@/components/NowPlayingText";
 import { ContributionChart } from "@/components/ContributionChart";
+import { useAnimate } from "framer-motion";
+import { useMotionValue, useMotionValueEvent } from "framer-motion";
 
 export const metadata: Metadata = {
   openGraph: {
@@ -39,15 +41,33 @@ export default function Home({ contributions }: { contributions: {} }) {
   const [loading, setLoading] = useState(true);
   const [initialLoading, setInitialLoading] = useState(true);
   const [showPlayer, setShowPlayer] = useState(false);
+  const [showCrown, setShowCrown] = useState(false);
   const [showContributions, setShowContributions] = useState(false);
+  const [scope, animate] = useAnimate();
 
   const { data } = useSWR("/api/spotify", fetcher, { refreshInterval: 3000 });
+
+  const y = useMotionValue(0);
 
   const handleShowPlayer = (bool: boolean) => {
     if (data?.isPlaying) {
       setShowPlayer(bool);
     }
   };
+
+  const handleDragEnd = () => {
+    if (y.get() < -30) {
+      animate(scope.current, { y: -40, width: 130, height: 30, scale: 0.85 });
+    }
+  };
+
+  useMotionValueEvent(y, "change", (latest) => {
+    if (latest < -30) {
+      animate(scope.current, { scale: 0.85 });
+    } else {
+      animate(scope.current, { scale: 1 });
+    }
+  });
 
   return (
     <div className="relative w-screen h-dvh overflow-hidden bg-black">
@@ -81,6 +101,7 @@ export default function Home({ contributions }: { contributions: {} }) {
           <ResourceLink
             href={"https://devpost.com/AbhishekMore"}
             text="Devpost"
+            onHover={setShowCrown}
           />
         </div>
       </div>
@@ -90,14 +111,27 @@ export default function Home({ contributions }: { contributions: {} }) {
         <NowPlayingText visible={data?.isPlaying && showPlayer} />
         <div className="relative">
           <motion.div
-            animate={{ width: [60, 60, 260], y: [-50, 0, 0] }}
+            ref={scope}
+            drag="y"
+            dragSnapToOrigin
+            onDragEnd={handleDragEnd}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            initial={{
+              scale: 0,
+              width: 60,
+            }}
+            animate={{
+              scale: [0, 1, 1, 1],
+              width: [60, 150, 200, 260],
+            }}
             transition={{
               delay: 0.75,
-              times: [0, 0.5, 1],
-              duration: 0.5,
+              times: [0, 0.25, 0.5, 0.75],
+              duration: 0.75,
               type: "spring",
-              bounce: 0,
+              bounce: 0.1,
             }}
+            style={{ y }}
             onAnimationComplete={() => setInitialLoading(false)}
             className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden"
           >
@@ -119,6 +153,7 @@ export default function Home({ contributions }: { contributions: {} }) {
                   priority
                 ></Image>
               </div>
+
               <motion.div className="flex flex-col justify-end gap-1 ml-2">
                 <p className="montreal text-white opacity-40 text-[12px] leading-none tracking-wide mt-1 text-nowrap text-ellipsis">
                   SWE @ Dripos
@@ -128,18 +163,15 @@ export default function Home({ contributions }: { contributions: {} }) {
                 </p>
               </motion.div>
             </div>
-
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{
-                duration: 0.5,
-                delay: 1,
-                ease: "easeInOut",
-              }}
-              className={`${loading ? "bg-gray-400" : "bg-white"} flex-shrink-0 h-[44px] w-[44px] rounded-full overflow-hidden`}
-            ></motion.div>
           </motion.div>
+
+          <Image
+            src="/crown.gif"
+            width={50}
+            height={50}
+            alt=""
+            className={`${showCrown ? "opacity-100" : "opacity-0"} absolute -translate-x-6 -translate-y-20 -rotate-45 transition-opacity`}
+          />
 
           <AnimatePresence>
             {showPlayer && (

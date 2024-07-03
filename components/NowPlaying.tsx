@@ -1,8 +1,11 @@
 import React from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { SpotifyData } from "@/utils/types";
 
 export const NowPlaying = ({ data }: { data: SpotifyData }) => {
+  const [imageLoaded, setImageLoaded] = useState(false);
+
   if (!data?.isPlaying) {
     return <></>;
   }
@@ -13,12 +16,15 @@ export const NowPlaying = ({ data }: { data: SpotifyData }) => {
     <div className="w-[260px] bg-black rounded-[25px] flex flex-col justify-center mx-auto p-4">
       <div className="flex justify-between items-center">
         <div className="flex gap-2">
-          <div className="w-[60px] h-[60px] overflow-hidden rounded-sm">
+          <div
+            className={`${imageLoaded ? "opacity-100" : "opacity-0"} w-[60px] h-[60px] overflow-hidden rounded-sm transition-opacity`}
+          >
             <Image
               src={data?.albumImageUrl}
               width={256}
               height={256}
               alt="album"
+              onLoad={() => setImageLoaded(true)}
             ></Image>
           </div>
           <div className="flex flex-col justify-center">

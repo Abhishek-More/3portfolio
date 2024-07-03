@@ -17,7 +17,7 @@ export const ContributionChart = ({
       <div
         key={index}
         className={`${
-          contribution.count > 0 ? "bg-[#6cc644]" : "bg-gray-700"
+          contribution.count > 0 ? "bg-[#7BFD79] opacity-80" : "bg-gray-700"
         } w-3 h-3 rounded-sm`}
       ></div>
     ));
