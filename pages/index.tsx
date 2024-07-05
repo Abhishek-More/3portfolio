@@ -133,7 +133,7 @@ export default function Home({ contributions }: { contributions: {} }) {
             }}
             style={{ y }}
             onAnimationComplete={() => setInitialLoading(false)}
-            className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden"
+            className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden border-2 border-[#ececec]"
           >
             <div className="flex">
               <div
@@ -170,7 +170,7 @@ export default function Home({ contributions }: { contributions: {} }) {
             width={50}
             height={50}
             alt=""
-            className={`${showCrown ? "opacity-100" : "opacity-0"} absolute -translate-x-6 -translate-y-20 -rotate-45 transition-opacity`}
+            className={`${showCrown ? "opacity-100" : "opacity-0"} absolute -translate-x-6 -translate-y-20 -rotate-45 transition-opacity duration-300`}
           />
 
           <AnimatePresence>
