@@ -7,6 +7,7 @@ import { NowPlaying } from "@/components/NowPlaying";
 import { motion, AnimatePresence } from "framer-motion";
 import useSWR from "swr";
 import { NowPlayingText } from "@/components/NowPlayingText";
+import { Notifications } from "@/components/Notification";
 import { ContributionChart } from "@/components/ContributionChart";
 import { useAnimate } from "framer-motion";
 import { useMotionValue, useMotionValueEvent } from "framer-motion";
@@ -43,6 +44,7 @@ export default function Home({ contributions }: { contributions: {} }) {
   const [showPlayer, setShowPlayer] = useState(false);
   const [showCrown, setShowCrown] = useState(false);
   const [showContributions, setShowContributions] = useState(false);
+  const [showNotifications, setShowNotifications] = useState(false);
   const [scope, animate] = useAnimate();
 
   const { data } = useSWR("/api/spotify", fetcher, { refreshInterval: 3000 });
@@ -73,14 +75,6 @@ export default function Home({ contributions }: { contributions: {} }) {
     <div className="relative w-screen h-dvh overflow-hidden bg-black">
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       {/* Overlay */}
-      <div className="absolute flex flex-col bottom-8 left-8 z-50">
-        <p className="montreal text-[80px] text-white font-medium leading-none">
-          ABHISHEK
-        </p>
-        <p className="montreal text-[80px] text-white font-medium leading-none">
-          MORE
-        </p>
-      </div>
       <div className="fixed flex flex-col items-end bottom-8 right-8 z-[100]">
         <div className="flex gap-4">
           <ResourceLink
@@ -97,6 +91,7 @@ export default function Home({ contributions }: { contributions: {} }) {
           <ResourceLink
             href={"https://www.linkedin.com/in/abhishek-more-linked"}
             text="LinkedIn"
+            onHover={setShowNotifications}
           />
           <ResourceLink
             href={"https://devpost.com/AbhishekMore"}
@@ -204,6 +199,9 @@ export default function Home({ contributions }: { contributions: {} }) {
                 <ContributionChart contributions={contributions} />
               </motion.div>
             )}
+          </AnimatePresence>
+          <AnimatePresence>
+            {showNotifications && <Notifications />}
           </AnimatePresence>
         </div>
       </div>
