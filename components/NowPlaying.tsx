@@ -29,10 +29,10 @@ export const NowPlaying = ({ data }: { data: SpotifyData }) => {
           </div>
           <div className="flex flex-col justify-center">
             <p className="max-w-[142px] montreal text-white opacity-80 font-medium text-sm text-ellipsis tracking-wide overflow-hidden text-nowrap">
-              {data?.title}
+              {data?.title.toLowerCase()}
             </p>
             <p className="montreal text-white opacity-40 text-sm text-ellipsis tracking-wide">
-              {data?.artist.split(",")[0]}
+              {data?.artist.split(",")[0].toLowerCase()}
             </p>
           </div>
         </div>

@@ -151,10 +151,10 @@ export default function Home({ contributions }: { contributions: {} }) {
 
               <motion.div className="flex flex-col justify-end gap-1 ml-2">
                 <p className="montreal text-white opacity-40 text-[12px] leading-none tracking-wide mt-1 text-nowrap text-ellipsis">
-                  SWE @ Dripos
+                  swe @ dripos
                 </p>
                 <p className="montreal text-white font-medium text-[16px] leading-none tracking-wide mb-1 text-nowrap text-ellipsis">
-                  Abhishek More
+                  abhishek more
                 </p>
               </motion.div>
             </div>
