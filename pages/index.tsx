@@ -39,7 +39,6 @@ export const metadata: Metadata = {
 const fetcher = (url: string) => fetch(url).then((r) => r.json());
 
 export default function Home({ contributions }: { contributions: {} }) {
-  const [loading, setLoading] = useState(true);
   const [initialLoading, setInitialLoading] = useState(true);
   const [showPlayer, setShowPlayer] = useState(false);
   const [showCrown, setShowCrown] = useState(false);

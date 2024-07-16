@@ -17,7 +17,7 @@ const NOTIFICATIONS: Notification[] = [
   },
 
   {
-    title: "highlight.io 🔭",
+    title: "highlight.io 👀",
     desc: "frontend for the best fullstack monitoring tool.",
     time: "2022-2024",
     img: "https://media.licdn.com/dms/image/C4E0BAQHRqu3Ak49ncA/company-logo_200_200/0/1658878447103/highlightrun_logo?e=1728518400&v=beta&t=0SJpJ4TaatS31R8y_FZgHKNLiL_WSm7ZJVW1Wr5OwGk",
