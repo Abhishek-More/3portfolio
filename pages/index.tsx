@@ -1,6 +1,6 @@
 import { ResourceLink } from "@/components/ResourceLink";
 import Image from "next/image";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import React from "react";
 import type { Metadata } from "next";
 import { NowPlaying } from "@/components/NowPlaying";
@@ -9,7 +9,7 @@ import useSWR from "swr";
 import { NowPlayingText } from "@/components/NowPlayingText";
 import { Notifications } from "@/components/Notification";
 import { ContributionChart } from "@/components/ContributionChart";
-import { useAnimate } from "framer-motion";
+import { useAnimate, useScroll } from "framer-motion";
 import { useMotionValue, useMotionValueEvent } from "framer-motion";
 
 export const metadata: Metadata = {
@@ -44,7 +44,13 @@ export default function Home({ contributions }: { contributions: {} }) {
   const [showCrown, setShowCrown] = useState(false);
   const [showContributions, setShowContributions] = useState(false);
   const [showNotifications, setShowNotifications] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+  const pageRef = useRef(null);
+  const bufferRef = useRef<HTMLDivElement | null>(null);
   const [scope, animate] = useAnimate();
+  const { scrollY } = useScroll({
+    container: pageRef,
+  });
 
   const { data } = useSWR("/api/spotify", fetcher, { refreshInterval: 3000 });
 
@@ -56,22 +62,22 @@ export default function Home({ contributions }: { contributions: {} }) {
     }
   };
 
-  const handleDragEnd = () => {
-    if (y.get() < -30) {
-      animate(scope.current, { y: -40, width: 130, height: 30, scale: 0.85 });
-    }
-  };
-
-  useMotionValueEvent(y, "change", (latest) => {
-    if (latest < -30) {
-      animate(scope.current, { scale: 0.85 });
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    if (latest > bufferRef.current?.clientHeight) {
     } else {
-      animate(scope.current, { scale: 1 });
+      animate(scope.current, {
+        y: -latest,
+        scale: 1 - latest / 2000,
+        duration: 2,
+      });
     }
   });
 
   return (
-    <div className="relative w-screen h-dvh overflow-hidden bg-black">
+    <div
+      ref={pageRef}
+      className="relative w-screen h-dvh overflow-y-scroll bg-black"
+    >
       <meta name="viewport" content="width=device-width, initial-scale=1" />
       {/* Overlay */}
       <div className="fixed flex flex-col items-end bottom-8 right-8 z-[100]">
@@ -101,15 +107,11 @@ export default function Home({ contributions }: { contributions: {} }) {
       </div>
 
       {/* DYNAMIC ISLAND OVERLAY */}
-      <div className="flex flex-col justify-center items-center absolute h-screen w-screen bg-[#ececec] z-50 gap-2">
+      <div className="flex flex-col justify-center items-center absolute h-screen w-screen bg-none z-50 gap-2 pointer-events-none">
         <NowPlayingText visible={data?.isPlaying && showPlayer} />
-        <div className="relative">
+        <div className="fixed">
           <motion.div
             ref={scope}
-            drag="y"
-            dragSnapToOrigin
-            onDragEnd={handleDragEnd}
-            dragConstraints={{ top: 0, bottom: 0 }}
             initial={{
               scale: 0,
               width: 60,
@@ -127,11 +129,11 @@ export default function Home({ contributions }: { contributions: {} }) {
             }}
             style={{ y }}
             onAnimationComplete={() => setInitialLoading(false)}
-            className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full p-2 overflow-hidden border-2 border-[#ececec]"
+            className="relative flex justify-between items-center mx-auto h-[60px] w-[260px] bg-black rounded-full border-2 border-[#ececec]"
           >
-            <div className="flex">
+            <div className="flex p-2">
               <div
-                className={`flex-shrink-0 h-[44px] w-[44px] rounded-full bg-white my-auto overflow-hidden transition-all duration-1000`}
+                className={`flex-shrink-0 h-[44px] w-[44px] rounded-full bg-white my-auto overflow-hidden transition-all duration-1000 pointer-events-auto`}
                 style={{
                   border: `2px solid rgb(29, 185, 84, ${data?.isPlaying ? "100" : "0"})`,
                 }}
@@ -157,6 +159,41 @@ export default function Home({ contributions }: { contributions: {} }) {
                 </p>
               </motion.div>
             </div>
+            <AnimatePresence>
+              {showPlayer && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 6 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute top-[72px]"
+                >
+                  <NowPlaying data={data} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {showContributions && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95, y: 6 }}
+                  animate={{ opacity: 1, scale: 1, y: 0 }}
+                  exit={{ opacity: 0, scale: 0.95, y: 6 }}
+                  transition={{
+                    duration: 0.3,
+                    ease: "easeInOut",
+                  }}
+                  className="absolute top-[72px]"
+                >
+                  <ContributionChart contributions={contributions} />
+                </motion.div>
+              )}
+            </AnimatePresence>
+            <AnimatePresence>
+              {showNotifications && <Notifications />}
+            </AnimatePresence>
           </motion.div>
 
           <Image
@@ -166,44 +203,11 @@ export default function Home({ contributions }: { contributions: {} }) {
             alt=""
             className={`${showCrown ? "opacity-100" : "opacity-0"} absolute -translate-x-6 -translate-y-20 -rotate-45 transition-opacity duration-300`}
           />
-
-          <AnimatePresence>
-            {showPlayer && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 6 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 6 }}
-                transition={{
-                  duration: 0.3,
-                  ease: "easeInOut",
-                }}
-                className="absolute top-[72px]"
-              >
-                <NowPlaying data={data} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <AnimatePresence>
-            {showContributions && (
-              <motion.div
-                initial={{ opacity: 0, scale: 0.95, y: 6 }}
-                animate={{ opacity: 1, scale: 1, y: 0 }}
-                exit={{ opacity: 0, scale: 0.95, y: 6 }}
-                transition={{
-                  duration: 0.3,
-                  ease: "easeInOut",
-                }}
-                className="absolute top-[72px]"
-              >
-                <ContributionChart contributions={contributions} />
-              </motion.div>
-            )}
-          </AnimatePresence>
-          <AnimatePresence>
-            {showNotifications && <Notifications />}
-          </AnimatePresence>
         </div>
       </div>
+      <div ref={bufferRef} className="h-1/3 bg-[#ececec]"></div>
+      <div className="h-screen bg-[#ececec] flex flex-col justify-end">hi</div>
+      <div className="h-screen bg-[#ececec]"></div>
     </div>
   );
 }
