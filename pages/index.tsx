@@ -201,7 +201,7 @@ export default function Home({ contributions }: { contributions: {} }) {
             width={50}
             height={50}
             alt=""
-            className={`${showCrown ? "opacity-100" : "opacity-0"} absolute -translate-x-6 -translate-y-20 -rotate-45 transition-opacity duration-300`}
+            className={`${showCrown ? "opacity-100" : "opacity-0"} absolute -translate-x-5 -translate-y-20 -rotate-45 transition-opacity duration-300 -z-10`}
           />
         </div>
       </div>
