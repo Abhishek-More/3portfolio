@@ -13,26 +13,26 @@ const NOTIFICATIONS: Notification[] = [
     title: "dripos ☕️",
     desc: "building software for coffee shops!",
     time: "now",
-    img: "https://media.licdn.com/dms/image/D4D0BAQE9EajxBRtbzA/company-logo_200_200/0/1718293021650/dripos_logo?e=1728518400&v=beta&t=mdTZzejTx4eD3hhsskyn4ni544bFOYwfUYsHpGzWf8A",
+    img: "https://media.licdn.com/dms/image/v2/D4D0BAQE9EajxBRtbzA/company-logo_100_100/company-logo_100_100/0/1718293021650/dripos_logo?e=1736985600&v=beta&t=MIz3bXRacYPaVSoxCeKbBfkoILrV53SOR2TCnTPUHz0",
   },
 
   {
     title: "highlight.io 👀",
     desc: "frontend for the best fullstack monitoring tool.",
     time: "2022-2024",
-    img: "https://media.licdn.com/dms/image/C4E0BAQHRqu3Ak49ncA/company-logo_200_200/0/1658878447103/highlightrun_logo?e=1728518400&v=beta&t=0SJpJ4TaatS31R8y_FZgHKNLiL_WSm7ZJVW1Wr5OwGk",
+    img: "https://media.licdn.com/dms/image/v2/C4E0BAQHRqu3Ak49ncA/company-logo_100_100/company-logo_100_100/0/1658878447103/highlightrun_logo?e=1736985600&v=beta&t=OMl55uLTR3aTgaifQGcBYYRdFO3g5AOxoiST3wznfvo",
   },
   {
     title: "amazon 🍌",
     desc: "interning at aws.",
     time: "2022",
-    img: "https://media.licdn.com/dms/image/C560BAQHTvZwCx4p2Qg/company-logo_200_200/0/1630640869849/amazon_logo?e=1728518400&v=beta&t=2tSR-0sjAa6rznsyghKohUuktdFKlLhvyZliM6ttSD8",
+    img: "https://media.licdn.com/dms/image/v2/C560BAQHTvZwCx4p2Qg/company-logo_100_100/company-logo_100_100/0/1630640869849/amazon_logo?e=1736985600&v=beta&t=QcAkqNTYnTon8iMUgGUY2-FIae25-vKEdfOZAXsTkfc",
   },
   {
     title: "texas a&m university",
     desc: "computer engineering 🤖 + business 🖍️",
     time: "2019-2024",
-    img: "https://media.licdn.com/dms/image/C510BAQH0AwblDTN6-g/company-logo_200_200/0/1631353027028?e=1728518400&v=beta&t=PBonnEZwwsBBcELAykwM4J9JABpTxrPNg8p81RP-y4c",
+    img: "https://media.licdn.com/dms/image/v2/C510BAQH0AwblDTN6-g/company-logo_100_100/company-logo_100_100/0/1631353027028?e=1736985600&v=beta&t=PPBLclFGGC5sUt2A9mkMRt2Pl3Zf0llmIuDPbVvU_es",
   },
 ];
 
