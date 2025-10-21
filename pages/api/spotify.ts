@@ -38,6 +38,17 @@ export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<SpotifyData | {}>,
 ) {
+  res.setHeader("Access-Control-Allow-Credentials", "true");
+  res.setHeader("Access-Control-Allow-Origin", "*"); // Or specify your domain
+  res.setHeader(
+    "Access-Control-Allow-Methods",
+    "GET,OPTIONS,PATCH,DELETE,POST,PUT",
+  );
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version",
+  );
+
   const response = await getNowPlaying();
 
   if (response.status === 204 || response.status > 400) {
